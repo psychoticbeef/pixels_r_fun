@@ -36,11 +36,11 @@ mask_red2 = cv2.inRange(roi, red_lower2, red_upper2)
 mask_red = cv2.bitwise_or(mask_red1, mask_red2)
 mask_green = cv2.inRange(roi, green_lower, green_upper)
 
-# count the number of red and green pixels
+# count the number of red and green pixels. just to show how classification could be done.
 red_count = np.count_nonzero(mask_red)
 green_count = np.count_nonzero(mask_green)
 
-# calculate the percentage of red and green pixels
+# calculate the percentage of red and green pixels. could be used to classify "red" or "green" or "could not really detect it".
 total_pixels = roi.shape[0] * roi.shape[1]
 red_percentage = (red_count / total_pixels) * 100
 green_percentage = (green_count / total_pixels) * 100
@@ -50,13 +50,17 @@ print(f"Percentage of red pixels: {red_percentage:.2f}%")
 print(f"Percentage of green pixels: {green_percentage:.2f}%")
 
 # just for display: show the actual pixels that are red / green, i.e.: take the pixels from the original image, and show those that are red / green
+# where the mask is non-zero (i.e. red or green found), the original image is copied
 rgb_red = cv2.bitwise_and(rgb_roi, rgb_roi, mask=mask_red)
 rgb_green = cv2.bitwise_and(rgb_roi, rgb_roi, mask=mask_green)
 
+# show the images to get a feel. original image, only red parts, only green parts
+# see output.png for an example.
 cv2.imshow('frame', rgb_roi)
 cv2.imshow('mask_red', rgb_red)
 cv2.imshow('mask_green', rgb_green)
 
+# wait for keypress. otherwise imshow instantly closes.
 k = cv2.waitKey(0) & 0xFF
 
 
